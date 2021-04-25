@@ -1,9 +1,5 @@
 
-
-
-
-
-///
+// set height, width and margins
 var svgWidth = 1100;
 var svgHeight = 600;
 
@@ -17,22 +13,21 @@ var margin = {
 var width = svgWidth - margin.left - margin.right;
 var height = svgHeight - margin.top - margin.bottom;
 
-// Create an SVG wrapper, append an SVG group that will hold our chart,
-// and shift the latter by left and top margins.
+// create SVG, ppend to hold chart and shift,
 var svg = d3
   .select("#scatter")
   .append("svg")
   .attr("width", svgWidth)
   .attr("height", svgHeight);
 
-// Append an SVG group
+// append an SVG group
 var chartGroup = svg.append("g")
   .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
-// Initial Params
+// initial axis
 var chosenXAxis = "obesity";
 
-// function used for updating x-scale var upon click on axis label
+// update x-scale upon click 
 function xScale(stateData, chosenXAxis) {
   // create scales
   var xLinearScale = d3.scaleLinear()
@@ -45,7 +40,7 @@ function xScale(stateData, chosenXAxis) {
 
 }
 
-// function used for updating xAxis var upon click on axis label
+// update xAxis upon click
 function renderAxes(newXScale, xAxis) {
   var bottomAxis = d3.axisBottom(newXScale);
 
@@ -56,8 +51,7 @@ function renderAxes(newXScale, xAxis) {
   return xAxis;
 }
 
-// function used for updating circles group with a transition to
-// new circles
+// update circles group with transition
 function renderCircles(circlesGroup, newXScale, chosenXAxis) {
 
   circlesGroup.transition()
@@ -67,6 +61,7 @@ function renderCircles(circlesGroup, newXScale, chosenXAxis) {
   return circlesGroup;
 }
 
+// update circle labels with transition
 function renderLabels(circleLabels, newXScale, chosenXAxis) {
 
   circleLabels.transition()
@@ -76,10 +71,8 @@ function renderLabels(circleLabels, newXScale, chosenXAxis) {
   return circleLabels;
 }
 
-// 
 
-
-// function used for updating circles group with new tooltip
+// update circles group with new tooltip
 function updateToolTip(chosenXAxis, circlesGroup) {
 
   var label;
@@ -101,14 +94,15 @@ function updateToolTip(chosenXAxis, circlesGroup) {
 
   circlesGroup.call(toolTip);
 
+  // mouse events
 circlesGroup.on("mouseover", toolTip.show)
-    // onmouseout event
+    
     .on("mouseout", toolTip.hide);
 
   return circlesGroup;
 }
 
-// Retrieve data from the CSV file and execute everything below
+// retrieve data from the CSV file and execute everything below
 d3.csv("assets/data/data.csv").then(function(stateData, err) {
   if (err) throw err;
 
@@ -120,15 +114,14 @@ d3.csv("assets/data/data.csv").then(function(stateData, err) {
     data.smokes = +data.smokes;
   });
 
-  // xLinearScale function above csv import
+  // create x and y function 
   var xLinearScale = xScale(stateData, chosenXAxis);
 
-  // Create y scale function
   var yLinearScale = d3.scaleLinear()
     .domain([0, d3.max(stateData, d => d.healthcare)])
     .range([height, 0]);
 
-  // Create initial axis functions
+  // create initial axis functions
   var bottomAxis = d3.axisBottom(xLinearScale);
   var leftAxis = d3.axisLeft(yLinearScale);
 
@@ -150,7 +143,7 @@ d3.csv("assets/data/data.csv").then(function(stateData, err) {
     .attr("cx", d => xLinearScale(d[chosenXAxis]))
     .attr("cy", d => yLinearScale(d.healthcare))
     .attr("r", 10)
-    .attr("fill", "lightblue")
+    .attr("fill", "blue")
     .attr("opacity", ".5")
   
 // append circle labels
@@ -164,9 +157,9 @@ d3.csv("assets/data/data.csv").then(function(stateData, err) {
     .attr("font-family", "sans-serif")
     .attr("font-size", "10px")
     .attr("text-anchor", "middle")
-    .attr("fill", "black");
+    .attr("fill", "white");
      
-  // Create group for two x-axis labels
+  // create group for two x-axis labels
   var labelsGroup = chartGroup.append("g")
     .attr("transform", `translate(${width / 2}, ${height + 20})`);
 
@@ -200,7 +193,7 @@ d3.csv("assets/data/data.csv").then(function(stateData, err) {
     .classed("axis-text", true)
     .text("Lacks Healthcare");
 
-  // updateToolTip function above csv import
+  // updateToolTip function 
   var circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
 
   // x axis labels event listener
@@ -215,7 +208,6 @@ d3.csv("assets/data/data.csv").then(function(stateData, err) {
 
         // console.log(chosenXAxis)
 
-        // functions here found above csv import
         // updates x scale for new data
         xLinearScale = xScale(stateData, chosenXAxis);
 
@@ -225,6 +217,8 @@ d3.csv("assets/data/data.csv").then(function(stateData, err) {
         // updates circles with new x values
         circlesGroup = renderCircles(circlesGroup, xLinearScale, chosenXAxis, circleLabels);
 
+        //****** */ update circle labels
+        circleLabels = renderLabels(circleLabels, xLinearScale, chosenXAxis)
 
         // updates tooltips with new info
         circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
