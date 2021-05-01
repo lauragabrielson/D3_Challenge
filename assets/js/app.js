@@ -153,7 +153,7 @@ d3.csv("assets/data/data.csv").then(function(stateData, err) {
     .attr("fill", "cornflowerblue")
     .attr("opacity", ".5")
   
-// append circle labels
+// append circle labels with state abbreviations
   let circleLabels = chartGroup.selectAll(null)
     .data(stateData)
     .enter()
