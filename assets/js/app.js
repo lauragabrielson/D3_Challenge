@@ -227,7 +227,7 @@ d3.csv("assets/data/data.csv").then(function(stateData, err) {
         //****** */ update circle labels
         circleLabels = renderLabels(circleLabels, xLinearScale, chosenXAxis)
 
-        // updates tooltips with new info
+        // updates tooltips with new information
         circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
 
         // changes classes to change bold text on graph
