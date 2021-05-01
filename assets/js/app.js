@@ -61,7 +61,7 @@ function renderCircles(circlesGroup, newXScale, chosenXAxis) {
   return circlesGroup;
 }
 
-// update circle labels with transition
+// update circle labels with state abbreviations with transition
 function renderLabels(circleLabels, newXScale, chosenXAxis) {
 
   circleLabels.transition()
