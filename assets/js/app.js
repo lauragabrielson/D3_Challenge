@@ -230,7 +230,7 @@ d3.csv("assets/data/data.csv").then(function(stateData, err) {
         // updates tooltips with new info
         circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
 
-        // changes classes to change bold text
+        // changes classes to change bold text on graph
         if (chosenXAxis === "obesity") {
           obesityLabel
             .classed("active", true)
