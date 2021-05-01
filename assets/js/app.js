@@ -224,7 +224,7 @@ d3.csv("assets/data/data.csv").then(function(stateData, err) {
         // updates circles with new x values
         circlesGroup = renderCircles(circlesGroup, xLinearScale, chosenXAxis, circleLabels);
 
-        //****** */ update circle labels
+        // updates circle labels with state abbreviations
         circleLabels = renderLabels(circleLabels, xLinearScale, chosenXAxis)
 
         // updates tooltips with new information
